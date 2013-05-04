@@ -1,12 +1,14 @@
 (ns schedlogic.core
-  (:refer-clojure :exclude [== distinct])
-  (:require [clojure.core.logic :refer [conde
-                                        lvars
-                                        run
-                                        fresh
-                                        everyg
-                                        ==]]
-            [clojure.core.logic.fd :refer [eq in interval distinct]]))
+  (:refer-clojure :exclude [==])
+  (:require [clojure.core.logic    :refer [==
+                                           conde
+                                           everyg
+                                           fresh
+                                           lvars
+                                           run]]
+            [clojure.core.logic.fd :refer [eq
+                                           in
+                                           interval]]))
 
 (def day-intervals (* 24 4))
 
@@ -28,7 +30,11 @@
   (in start end (interval day-intervals)))
 
 (defn schedule [n tasks appts]
-  "Find the first n ways to schedule tasks given set appts. Tasks should be a vector of [earliest latest length] vectors, and appts should be a vector of [start end] vectors."
+  "Find the first n ways to schedule tasks given set appts. Tasks
+should be a vector of [earliest latest length] vectors, and appts
+should be a vector of [start end] vectors. All times are represented
+as integers between 0 and 96, representing 15-minute intervals in a
+day."
   (let [task-times (zip (lvars (count tasks)) (lvars (count tasks)))]
     (run n [q]
       (== q task-times)
