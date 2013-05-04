@@ -8,7 +8,7 @@
                                         ==]]
             [clojure.core.logic.fd :refer [eq in interval distinct]]))
 
-(def day-intervals 24)
+(def day-intervals (* 24 4))
 
 (defn- zip [xs ys]
   (map vector xs ys))
@@ -39,15 +39,3 @@
                                          t2 tasks-and-appts
                                          :when (not (= t1 t2))]
                                      [t1 t2]))))))
-
-(comment
-
-  (schedule 2
-            [[2 6 2]
-             [2 6 2]
-             [1 8 1]
-             [7 20 7]]
-            [[7 9]
-             [6 7]])
-
-  )
