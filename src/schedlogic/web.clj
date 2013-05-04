@@ -41,5 +41,4 @@
 
 (comment
   (-main)
-  (every? empty? [])
   )

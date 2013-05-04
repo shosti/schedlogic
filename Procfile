@@ -1,1 +1,1 @@
-web: lein with-profile production trampoline run -m blah.web
+web: lein with-profile production trampoline run -m schedlogic.web
