@@ -23,6 +23,15 @@
     :appts sample-appts
     :n_schedules 1}))
 
+(def impossible-tasks
+  [{:earliest 0 :latest 2 :length 3 :id 1}])
+
+(def impossible-day
+  (generate-string
+   {:tasks impossible-tasks
+    :appts []
+    :n_schedules 1}))
+
 (def sample-response-tasks
   [{:start 0
     :end 2}
@@ -45,4 +54,8 @@
 
   (testing "Schedule a day"
     (is (= (schedule-day sample-day)
-           sample-response))))
+           sample-response)))
+
+  (testing "Schedule an impossible day"
+    (is (= (schedule-day impossible-day)
+           (generate-string "none")))))

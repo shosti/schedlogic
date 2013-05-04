@@ -16,13 +16,16 @@
 (defn schedule-day [day]
   (let [{:keys [tasks appts n_schedules]} (parse-string day true)
         sorted-tasks (sort-by :id tasks)
-        ids (map :id sorted-tasks)]
+        ids (map :id sorted-tasks)
+        schedules (schedule-tasks sorted-tasks appts n_schedules)]
     (generate-string
-     (map (fn [sched]
-            {:tasks
-             (map #(merge %1 {:id %2})
-                  sched ids)})
-          (schedule-tasks sorted-tasks appts n_schedules)))))
+     (if (empty? schedules)
+       "none"
+       (map (fn [sched]
+              {:tasks
+               (map #(merge %1 {:id %2})
+                    sched ids)})
+            schedules)))))
 
 (defroutes app
   (GET "/schedule" [day]
