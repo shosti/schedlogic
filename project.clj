@@ -7,4 +7,5 @@
                  [org.clojure/core.logic "0.8.3"]
                  [cheshire "5.1.1"]
                  [compojure "1.1.5"]
-                 [ring "1.1.8"]])
+                 [ring "1.1.8"]]
+  :min-lein-version "2.0.0")

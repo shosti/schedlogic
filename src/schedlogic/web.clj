@@ -1,8 +1,9 @@
 (ns schedlogic.web
   (:require [cheshire.core :refer [generate-string parse-string]]
-            [compojure.route :as route]
+            [compojure.core :refer [defroutes GET]]
+            [compojure.handler :as handler]
             [schedlogic.core :refer [schedule]]
-            [ring.adapter.jetty :as jetty]))
+            [ring.adapter.jetty :refer [run-jetty]]))
 
 (defn schedule-tasks [tasks appts n]
   (map (fn [sched]
@@ -27,6 +28,18 @@
                     sched ids)})
             schedules)))))
 
-(defroutes app
+(defroutes app-routes
   (GET "/schedule" [day]
        (schedule-day day)))
+
+(def app
+  (handler/site app-routes))
+
+(defn -main [& [port]]
+  (let [port (Integer. (or (System/getenv "PORT") 5000))]
+    (run-jetty app {:port port})))
+
+(comment
+  (-main)
+  (every? empty? [])
+  )
