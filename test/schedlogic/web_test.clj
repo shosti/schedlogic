@@ -58,4 +58,8 @@
 
   (testing "Schedule an impossible day"
     (is (= (schedule-day impossible-day)
+           (generate-string "none"))))
+
+  (testing "Scheduling a blank day"
+    (is (= (schedule-day "")
            (generate-string "none")))))

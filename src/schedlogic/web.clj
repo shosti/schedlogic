@@ -20,7 +20,7 @@
         ids (map :id sorted-tasks)
         schedules (schedule-tasks sorted-tasks appts n_schedules)]
     (generate-string
-     (if (empty? schedules)
+     (if (or (empty? schedules) (every? empty? schedules))
        "none"
        (map (fn [sched]
               {:tasks
