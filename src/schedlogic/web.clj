@@ -5,6 +5,8 @@
             [schedlogic.core :refer [schedule]]
             [ring.adapter.jetty :refer [run-jetty]]))
 
+(def ^:dynamic time-limit 10000)
+
 (defn schedule-tasks [tasks appts n]
   (map (fn [sched]
          (map #(hash-map :start (first %) :end (second %)) sched))
@@ -14,7 +16,7 @@
                  (map #(vector (:start %) (:end %))
                       appts))))
 
-(defn schedule-day [day]
+(defn attempt-schedule-day [day]
   (let [{:keys [tasks appts n_schedules]} (parse-string day true)
         sorted-tasks (sort-by :id tasks)
         ids (map :id sorted-tasks)
@@ -28,6 +30,13 @@
                     sched ids)})
             schedules)))))
 
+(defn schedule-day [day]
+  (let [a (agent day)]
+    (send a attempt-schedule-day)
+    (if (await-for time-limit a)
+      @a
+      (generate-string "failure"))))
+
 (defroutes app-routes
   (GET "/schedule" [day]
        (schedule-day day)))
@@ -38,7 +47,3 @@
 (defn -main [& [port]]
   (let [port (Integer. (or (System/getenv "PORT") 5000))]
     (run-jetty app {:port port})))
-
-(comment
-  (-main)
-  )

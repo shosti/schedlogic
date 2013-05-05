@@ -47,8 +47,17 @@
               :end 2
               :id 3}]}]))
 
+(def hard-day
+  (generate-string
+   {:tasks (into []
+                 (repeat 96 {:earliest 0
+                             :latest 96
+                             :length 1}))
+    :appts []
+    :n_schedules 1}))
+
 (deftest test-schedule-day
-  (testing "schedule tasks"
+  (testing "Schedule tasks"
     (is (= (first (schedule-tasks sample-tasks sample-appts 1))
            sample-response-tasks)))
 
@@ -60,6 +69,10 @@
     (is (= (schedule-day impossible-day)
            (generate-string "none"))))
 
-  (testing "Scheduling a blank day"
+  (testing "Schedule a blank day"
     (is (= (schedule-day "")
-           (generate-string "none")))))
+           (generate-string "none"))))
+
+  (testing "Schedule a day that takes too long to schedule"
+    (is (= (binding [time-limit 500] (schedule-day hard-day))
+           (generate-string "failure")))))
