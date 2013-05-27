@@ -1,6 +1,6 @@
-(defproject schedlogic "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+(defproject schedlogic "0.1.0"
+  :description "A tiny web service that schedules tasks within a day."
+  :url "http://schedlogic.herokuapp.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
