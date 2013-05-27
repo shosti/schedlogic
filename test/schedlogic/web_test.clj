@@ -40,12 +40,12 @@
 
 (def sample-response
   (generate-string
-   [{:tasks [{:start 3
-              :end 4
-              :id 1}
-             {:start 0
-              :end 2
-              :id 3}]}]))
+   [[{:start 3
+      :end 4
+      :id 1}
+     {:start 0
+      :end 2
+      :id 3}]]))
 
 (def hard-day
   (generate-string

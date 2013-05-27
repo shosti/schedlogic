@@ -25,9 +25,8 @@
      (if (or (empty? schedules) (every? empty? schedules))
        "none"
        (map (fn [sched]
-              {:tasks
-               (map #(merge %1 {:id %2})
-                    sched ids)})
+              (map #(merge %1 {:id %2})
+                   sched ids))
             schedules)))))
 
 (defn schedule-day [day]
