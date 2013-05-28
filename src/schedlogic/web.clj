@@ -5,13 +5,13 @@
 ;; parameter, `day`, and returns a JSON response. The request JSON
 ;; follows this format:
 ;;
-;;     {tasks: [{earliest: e, latest: l, id: id}*],
+;;     {tasks: [{earliest: e, latest: l}*],
 ;;      appts: [{start: s, end: e}*],
 ;;      n_schedules: n}
 ;;
 ;; The response JSON is an array at most `n` schedules of form
-;; `[{start: s, end: e, id: id}*]` (i.e. a list of scheduled tasks).
-;; Task ids are preserved, although order might not be.
+;; `[{start: s, end: e}*]` (i.e. a list of scheduled tasks).
+;; The order of tasks within a schedule is preserved.
 ;;
 ;; If no schedules are possible with the given parameters, the
 ;; response will be a JSON string of `"none"`. If scheduling takes too
@@ -24,7 +24,7 @@
             [schedlogic.core :refer [schedule]]
             [ring.adapter.jetty :refer [run-jetty]]))
 
-(def time-limit
+(def ^:dynamic time-limit
   "The time limit for scheduling is currently hard coded at 10 seconds."
   10000)
 
@@ -42,16 +42,11 @@
 
 (defn attempt-schedule-day [day]
   (let [{:keys [tasks appts n_schedules]} (parse-string day true)
-        sorted-tasks (sort-by :id tasks)
-        ids (map :id sorted-tasks)
-        schedules (schedule-tasks sorted-tasks appts n_schedules)]
+        schedules (schedule-tasks tasks appts n_schedules)]
     (generate-string
      (if (or (empty? schedules) (every? empty? schedules))
        "none"
-       (map (fn [sched]
-              (map #(merge %1 {:id %2})
-                   sched ids))
-            schedules)))))
+       schedules))))
 
 (defn schedule-day
   "The `schedule` function runs in a separate thread. If it has not
